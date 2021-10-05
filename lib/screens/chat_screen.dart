@@ -1,9 +1,12 @@
+import 'package:chat_app/data/models/ChatModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  const ChatScreen({required this.selectedUser});
+
+  final ChatModel selectedUser;
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -50,12 +53,16 @@ class _ChatScreenState extends State<ChatScreen> {
               Expanded(
                 child: Container(
                   margin: EdgeInsets.all(5),
+                  padding: EdgeInsets.all(0),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       color: Colors.white),
                   child: TextField(
                     controller: messageTextEditingController,
+                    minLines: 1,
+                    maxLines: 5,
                     decoration: InputDecoration(
+                      isDense: true,
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(30)),
                         borderSide: BorderSide(color: Colors.grey),
@@ -78,7 +85,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   icon: Icon(Icons.send, color: Colors.white),
                   onPressed: sendMessage,
                 ),
-              )
+              ),
             ],
           )
         ],

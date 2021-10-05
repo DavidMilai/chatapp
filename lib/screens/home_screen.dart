@@ -1,3 +1,4 @@
+import 'package:chat_app/data/models/ChatModel.dart';
 import 'package:chat_app/screens/chat_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,22 +11,64 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late ChatModel selectedChat;
+
+  List<ChatModel> users = [
+    ChatModel(
+        id: 1,
+        currentMessage: "hey",
+        name: "Milai",
+        profilePhoto: "no photo",
+        time: DateTime.now()),
+    ChatModel(
+        id: 2,
+        currentMessage: "nothing",
+        name: "David",
+        profilePhoto: "no photo",
+        time: DateTime.now()),
+    ChatModel(
+        id: 3,
+        currentMessage: "hello",
+        name: "Melvin",
+        profilePhoto: "no photo",
+        time: DateTime.now()),
+    ChatModel(
+        id: 4,
+        currentMessage: "yow",
+        name: "DMM",
+        profilePhoto: "no photo",
+        time: DateTime.now()),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
+      body: Column(
         children: [
-          GestureDetector(
-            onTap: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => ChatScreen())),
-            child: Container(
-              padding: EdgeInsets.all(8),
-              margin: EdgeInsets.symmetric(vertical: 8),
-              height: 50,
-              color: Colors.red,
-              width: double.infinity,
-            ),
-          ),
+          Expanded(
+            child: ListView.builder(
+                itemCount: users.length,
+                itemBuilder: (context, index) {
+                  var user = users[index];
+                  return GestureDetector(
+                    onTap: () {
+                      selectedChat = user;
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ChatScreen(selectedUser: selectedChat)));
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      margin: EdgeInsets.symmetric(vertical: 8),
+                      height: 50,
+                      color: Colors.red,
+                      width: double.infinity,
+                    ),
+                  );
+                }),
+          )
         ],
       ),
     );
