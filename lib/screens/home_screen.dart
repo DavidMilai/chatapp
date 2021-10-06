@@ -1,4 +1,4 @@
-import 'package:chat_app/data/models/ChatModel.dart';
+import 'package:chat_app/data/models/chat_model.dart';
 import 'package:chat_app/screens/chat_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

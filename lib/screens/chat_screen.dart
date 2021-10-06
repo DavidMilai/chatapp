@@ -1,4 +1,7 @@
-import 'package:chat_app/data/models/ChatModel.dart';
+import 'package:chat_app/data/models/chat_model.dart';
+import 'package:chat_app/data/models/message_model.dart';
+import 'package:chat_app/widgets/my_message.dart';
+import 'package:chat_app/widgets/reply_message.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -14,6 +17,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   late IO.Socket socket;
+  late List<Message> messages = [];
   TextEditingController messageTextEditingController = TextEditingController();
 
   Future<void> connect() async {
@@ -27,14 +31,23 @@ class _ChatScreenState extends State<ChatScreen> {
       print("connected");
       socket.on("message", (msg) {
         print("##################");
+        setMessage(type: "destination", message: msg["message"]);
       });
     });
     socket.emit("signin", widget.selectedUser.id);
   }
 
+  void setMessage({required String type, required String message}) {
+    Message newMessage = Message(message: message, type: type);
+    setState(() {
+      messages.add(newMessage);
+    });
+  }
+
   void sendMessage(
       {required String message, required int sourceId, required int targetId}) {
     if (messageTextEditingController.text.length != 0) {
+      setMessage(type: "source", message: message);
       socket.emit("message", {
         "message": message,
         "sourceId": sourceId,
@@ -45,7 +58,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     connect();
   }
@@ -58,7 +70,19 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: Column(
         children: [
-          Spacer(),
+          Expanded(
+              child: ListView.builder(
+                  itemCount: messages.length,
+                  itemBuilder: (context, index) {
+                    var message = messages[index];
+                    if (message.type == "source")
+                      return MyMessage(message: message.message, time: "time");
+                    else
+                      return ReplyMessage(
+                        message: message.message,
+                        time: 'time',
+                      );
+                  })),
           Row(
             children: [
               Expanded(
