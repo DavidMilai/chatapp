@@ -17,18 +17,29 @@ class _ChatScreenState extends State<ChatScreen> {
   TextEditingController messageTextEditingController = TextEditingController();
 
   Future<void> connect() async {
+    print("hello");
     socket = IO.io("http://192.168.100.6:5000", <String, dynamic>{
       "transports": ["websocket"],
       "autoConnect": false
     });
     socket.connect();
-    socket.onConnect((data) => print("connected"));
-    socket.emit("/test", "hello world");
+    socket.onConnect((data) {
+      print("connected");
+      socket.on("message", (msg) {
+        print("##################");
+      });
+    });
+    socket.emit("signin", widget.selectedUser.id);
   }
 
-  sendMessage() {
+  void sendMessage(
+      {required String message, required int sourceId, required int targetId}) {
     if (messageTextEditingController.text.length != 0) {
-      print("hello");
+      socket.emit("message", {
+        "message": message,
+        "sourceId": sourceId,
+        "targetId": targetId,
+      });
     }
   }
 
@@ -83,7 +94,12 @@ class _ChatScreenState extends State<ChatScreen> {
                     BoxDecoration(shape: BoxShape.circle, color: Colors.amber),
                 child: IconButton(
                   icon: Icon(Icons.send, color: Colors.white),
-                  onPressed: sendMessage,
+                  onPressed: () {
+                    sendMessage(
+                        message: messageTextEditingController.text,
+                        sourceId: widget.selectedUser.id,
+                        targetId: 10);
+                  },
                 ),
               ),
             ],
