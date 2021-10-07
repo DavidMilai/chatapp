@@ -22,11 +22,19 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Future<void> connect() async {
     print("hello");
+    // socket = IO.io(Config.baseUrl, <String, dynamic>{
     socket = IO.io("http://192.168.100.6:5000", <String, dynamic>{
       "transports": ["websocket"],
       "autoConnect": false
     });
+    print("*****************");
+    print(socket.connected);
+    print("*****************");
     socket.connect();
+    print("##################");
+    print(socket.connected);
+    print("##################");
+
     socket.onConnect((data) {
       print("connected");
       socket.on("message", (msg) {
