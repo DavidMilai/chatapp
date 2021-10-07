@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(MyApp());
 }
+//TODO: flutter packages pub run build_runner build
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.

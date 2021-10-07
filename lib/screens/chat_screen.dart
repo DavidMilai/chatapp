@@ -27,14 +27,7 @@ class _ChatScreenState extends State<ChatScreen> {
       "transports": ["websocket"],
       "autoConnect": false
     });
-    print("*****************");
-    print(socket.connected);
-    print("*****************");
     socket.connect();
-    print("##################");
-    print(socket.connected);
-    print("##################");
-
     socket.onConnect((data) {
       print("connected");
       socket.on("message", (msg) {
