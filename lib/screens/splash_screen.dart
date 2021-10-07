@@ -1,3 +1,4 @@
+import 'package:chat_app/data/database.dart';
 import 'package:chat_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -18,9 +19,14 @@ class _SplashScreenState extends State<SplashScreen> {
         context, MaterialPageRoute(builder: (context) => HomeScreen()));
   }
 
+  void initDatabase() async {
+    await db.init();
+    await Future.delayed(Duration(seconds: 1), navigate);
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
+    initDatabase();
     super.initState();
   }
 
