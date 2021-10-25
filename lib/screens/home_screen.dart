@@ -1,5 +1,6 @@
 import 'package:chat_app/data/models/chat_model.dart';
 import 'package:chat_app/screens/chat_screen.dart';
+import 'package:chat_app/screens/login_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -68,6 +69,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   );
                 }),
+          ),
+          GestureDetector(
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => LoginScreen())),
+            child: Container(
+              height: 100,
+              width: double.infinity,
+              color: Colors.blue,
+            ),
           )
         ],
       ),
