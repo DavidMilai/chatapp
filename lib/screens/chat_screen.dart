@@ -30,9 +30,7 @@ class _ChatScreenState extends State<ChatScreen> {
     });
     socket.connect();
     socket.onConnect((data) {
-      print("connected");
       socket.on("message", (msg) {
-        print("##################");
         setMessage(type: "destination", message: msg["message"]);
       });
     });
