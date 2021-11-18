@@ -1,17 +1,17 @@
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'models/user_model.dart';
+import 'models/auth_data.dart';
 
 class Database {
-  late Box<User> authDataBox; //typeId: 0
+  late Box<AuthData> authDataBox; //typeId: 0
 
   _initBoxes() async {
     authDataBox = await Hive.openBox("authData");
   }
 
   _registerAdapters() async {
-    Hive.registerAdapter(UserAdapter());
+    Hive.registerAdapter(AuthDataAdapter());
   }
 
   init() async {
