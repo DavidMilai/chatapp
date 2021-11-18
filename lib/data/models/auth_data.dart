@@ -11,11 +11,15 @@ class AuthData {
     this.email,
     this.clientCode,
   });
-
+  @HiveField(0)
   String? message;
+  @HiveField(1)
   String? token;
+  @HiveField(2)
   String? id;
+  @HiveField(3)
   String? email;
+  @HiveField(4)
   String? clientCode;
 
   factory AuthData.fromMap(Map<String, dynamic> json) => AuthData(
