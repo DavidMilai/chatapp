@@ -17,11 +17,13 @@ class AuthService extends ChangeNotifier {
     notifyListeners();
   }
 
-  login(String email, String password) async {
+  Future login(String email, String password) async {
     loggingIn = true;
     await api.login(email, password).then((response) {
-      _saveAuthData(response);
+      _saveAuthData(response.data);
+      loggingIn = false;
     }).catchError((onError) {
+      loggingIn = false;
       throw onError;
     });
   }
