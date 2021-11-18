@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:chat_app/service/auth_service.dart';
 import 'package:dio/dio.dart';
 
 class DioApi {
@@ -15,23 +16,22 @@ class DioApi {
 
   _requestIntercept(RequestOptions options, handler) async {
     print(
-        "REQUEST: ${options?.method}: ${options?.baseUrl}${options?.path} ${options?.queryParameters}");
+        "REQUEST: ${options.method}: ${options.baseUrl}${options.path} ${options.queryParameters}");
     print(
-        "BODY: ${(options?.data != null && !(options?.data is FormData)) ? json.encode(options?.data) : ""}");
+        "BODY: ${(options.data != null && !(options.data is FormData)) ? json.encode(options.data) : ""}");
 
-    // if (authService.isLoggedIn) {
-    //   options.headers.addAll(
-    //     {
-    //       "token": "${authService.authData.token}",
-    //       "phone-number": "${authService.authData.phoneNumber}",
-    //     },
-    //   );
-    // }
+    if (authService.isLoggedIn) {
+      options.headers.addAll(
+        {
+          "token": "${authService.authData.token}",
+        },
+      );
+    }
     return handler.next(options); //continue
   }
 
   _responseIntercept(Response response, handler) async {
-    print("${response.requestOptions.path} ${response?.data}");
+    print("${response.requestOptions.path} ${response.data}");
     return handler.next(response); // continue
   }
 

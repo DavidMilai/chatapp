@@ -1,5 +1,7 @@
 import 'package:chat_app/data/database.dart';
 import 'package:chat_app/screens/home_screen.dart';
+import 'package:chat_app/screens/login_screen.dart';
+import 'package:chat_app/service/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,8 +17,12 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   nextScreen() {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    if (authService.isLoggedIn)
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    else
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 
   void initDatabase() async {

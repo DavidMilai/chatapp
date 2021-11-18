@@ -4,6 +4,10 @@ import 'package:chat_app/data/models/auth_data.dart';
 import 'package:flutter/cupertino.dart';
 
 class AuthService extends ChangeNotifier {
+  bool get isLoggedIn => db.authDataBox.isNotEmpty;
+
+  AuthData get authData => db.authDataBox.values.first;
+
   bool _loggingIn = false;
 
   bool get loggingIn => _loggingIn;
