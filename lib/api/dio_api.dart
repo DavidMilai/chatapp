@@ -19,11 +19,11 @@ class DioApi {
         "REQUEST: ${options.method}: ${options.baseUrl}${options.path} ${options.queryParameters}");
     print(
         "BODY: ${(options.data != null && !(options.data is FormData)) ? json.encode(options.data) : ""}");
-
     if (authService.isLoggedIn) {
+      print(" ${authService.authData!.token}");
       options.headers.addAll(
         {
-          "token": "${authService.authData.token}",
+          "token": "${authService.authData!.token}",
         },
       );
     }

@@ -49,7 +49,7 @@ class _ChatScreenState extends State<ChatScreen> {
       setMessage(type: "source", message: message);
       socket.emit("message", {
         "message": message,
-        "sourceId": authService.authData.id,
+        "sourceId": authService.authData!.id,
         "targetId": targetId,
       });
     }

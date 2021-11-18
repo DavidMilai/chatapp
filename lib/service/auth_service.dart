@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 class AuthService extends ChangeNotifier {
   bool get isLoggedIn => db.authDataBox.isNotEmpty;
 
-  AuthData get authData => db.authDataBox.values.first;
+  AuthData? get authData => db.authDataBox.getAt(0);
 
   bool _loggingIn = false;
 
@@ -30,7 +30,7 @@ class AuthService extends ChangeNotifier {
 
   _saveAuthData(data) async {
     await db.authDataBox.clear();
-    db.authDataBox.add(AuthData.fromMap(data));
+    db.authDataBox.put(0, AuthData.fromMap(data));
   }
 }
 
