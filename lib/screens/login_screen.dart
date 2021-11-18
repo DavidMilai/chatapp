@@ -1,3 +1,4 @@
+import 'package:chat_app/widgets/circular_material_spinner.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -16,21 +17,26 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(
         title: Text("Login screen"),
       ),
-      body: Column(
-        children: [
-          TextField(
-            controller: emailTextEditingController,
-            decoration: InputDecoration(hintText: 'Email address'),
-          ),
-          TextField(
-            controller: passwordTextEditingController,
-            decoration: InputDecoration(hintText: 'Password'),
-          ),
-          MaterialButton(
-            onPressed: () {},
-            child: Text("Login"),
-          )
-        ],
+      body: Padding(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          children: [
+            TextField(
+              controller: emailTextEditingController,
+              decoration: InputDecoration(hintText: 'Email address'),
+            ),
+            TextField(
+              controller: passwordTextEditingController,
+              decoration: InputDecoration(hintText: 'Password'),
+            ),
+            CircularMaterialSpinner(
+              child: MaterialButton(
+                onPressed: () {},
+                child: Text("Login"),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
