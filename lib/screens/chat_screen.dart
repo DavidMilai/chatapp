@@ -1,5 +1,6 @@
 import 'package:chat_app/data/models/chat_model.dart';
 import 'package:chat_app/data/models/message_model.dart';
+import 'package:chat_app/service/auth_service.dart';
 import 'package:chat_app/widgets/my_message.dart';
 import 'package:chat_app/widgets/reply_message.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,7 +49,7 @@ class _ChatScreenState extends State<ChatScreen> {
       setMessage(type: "source", message: message);
       socket.emit("message", {
         "message": message,
-        "sourceId": sourceId,
+        "sourceId": authService.authData.id,
         "targetId": targetId,
       });
     }
