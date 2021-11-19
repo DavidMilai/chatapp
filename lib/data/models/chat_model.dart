@@ -1,15 +1,15 @@
 class ChatModel {
   ChatModel({
-    required this.name,
-    required this.currentMessage,
-    required this.profilePhoto,
-    required this.time,
-    required this.id,
+    this.name,
+    this.currentMessage,
+    this.profilePhoto,
+    this.time,
+    this.id,
   });
 
-  int id;
-  String name;
-  String currentMessage;
-  DateTime time;
-  String profilePhoto;
+  String? id;
+  String? name;
+  String? currentMessage;
+  DateTime? time;
+  String? profilePhoto;
 }

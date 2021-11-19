@@ -18,6 +18,7 @@ class UsersService extends ChangeNotifier {
   Future getUsers() async {
     isGettingUsers = true;
     await api.getUser().then((response) {
+      print("****${response.data["response"]}");
       _saveUsers(response.data["response"]);
       isGettingUsers = false;
     }).catchError((onError) {

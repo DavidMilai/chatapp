@@ -1,8 +1,12 @@
 import 'package:chat_app/data/models/chat_model.dart';
-import 'package:chat_app/screens/chat_screen.dart';
+import 'package:chat_app/data/models/user.dart';
 import 'package:chat_app/service/users_service.dart';
+import 'package:chat_app/widgets/circular_material_spinner.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'chat_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,70 +18,97 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late ChatModel selectedChat;
 
-  List<ChatModel> users = [
-    ChatModel(
-        id: 1,
-        currentMessage: "hey",
-        name: "Milai",
-        profilePhoto: "no photo",
-        time: DateTime.now()),
-    ChatModel(
-        id: 2,
-        currentMessage: "nothing",
-        name: "David",
-        profilePhoto: "no photo",
-        time: DateTime.now()),
-    ChatModel(
-        id: 3,
-        currentMessage: "hello",
-        name: "Melvin",
-        profilePhoto: "no photo",
-        time: DateTime.now()),
-    ChatModel(
-        id: 4,
-        currentMessage: "yow",
-        name: "DMM",
-        profilePhoto: "no photo",
-        time: DateTime.now()),
-  ];
+  // List<ChatModel> users = [
+
+  //   ChatModel(
+  //       id: 2,
+  //       currentMessage: "nothing",
+  //       name: "David",
+  //       profilePhoto: "no photo",
+  //       time: DateTime.now()),
+  //   ChatModel(
+  //       id: 3,
+  //       currentMessage: "hello",
+  //       name: "Melvin",
+  //       profilePhoto: "no photo",
+  //       time: DateTime.now()),
+  //   ChatModel(
+  //       id: 4,
+  //       currentMessage: "yow",
+  //       name: "DMM",
+  //       profilePhoto: "no photo",
+  //       time: DateTime.now()),
+  // ];
 
   getChatUsers() {
     usersService.getUsers();
   }
 
   @override
+  void initState() {
+    super.initState();
+    usersService.getUsers();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Users"),
+      ),
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-                itemCount: users.length,
-                itemBuilder: (context, index) {
-                  var user = users[index];
-                  return GestureDetector(
-                    onTap: () {
-                      selectedChat = user;
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  ChatScreen(selectedUser: selectedChat)));
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      margin: EdgeInsets.symmetric(vertical: 8),
-                      height: 50,
-                      color: Colors.red,
-                      width: double.infinity,
-                    ),
-                  );
+            child: Selector<UsersService, bool>(
+                selector: (context, usersService) =>
+                    usersService.isGettingUsers,
+                builder: (context, loading, _) {
+                  return Selector<UsersService, List<User>>(
+                      selector: (context, usersService) => usersService.users,
+                      builder: (context, users, _) {
+                        return CircularMaterialSpinner(
+                          loading: loading,
+                          child: ListView.builder(
+                              itemCount: users.length,
+                              itemBuilder: (context, index) {
+                                var user = users[index];
+                                return GestureDetector(
+                                  onTap: () {
+                                    selectedChat = ChatModel(
+                                        id: user.id,
+                                        currentMessage: "hey",
+                                        name: user.email,
+                                        profilePhoto: "no photo",
+                                        time: DateTime.now());
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ChatScreen(
+                                                selectedUser: selectedChat)));
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(8),
+                                    margin: EdgeInsets.symmetric(vertical: 8),
+                                    height: 50,
+                                    width: double.infinity,
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.person_outline),
+                                        SizedBox(width: 10),
+                                        Text("${user.email}")
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }),
+                        );
+                      });
                 }),
           ),
           GestureDetector(
             onTap: getChatUsers,
             child: Container(
-              height: 100,
+              height: 10,
               width: double.infinity,
               color: Colors.blue,
             ),

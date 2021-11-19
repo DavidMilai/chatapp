@@ -1,6 +1,6 @@
 class Message {
-  Message({required this.message, required this.type, required this.userID});
-  String type;
-  String message;
-  String userID;
+  Message({this.message, this.type, this.userID});
+  String? type;
+  String? message;
+  String? userID;
 }

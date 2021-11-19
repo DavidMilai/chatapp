@@ -20,12 +20,8 @@ class DioApi {
     print(
         "BODY: ${(options.data != null && !(options.data is FormData)) ? json.encode(options.data) : ""}");
     if (authService.isLoggedIn) {
-      print(" ${authService.authData!.token}");
-      options.headers.addAll(
-        {
-          "token": "${authService.authData!.token}",
-        },
-      );
+      options.headers
+          .addAll({"Authorization": "Bearer ${authService.authData!.token}"});
     }
     return handler.next(options); //continue
   }

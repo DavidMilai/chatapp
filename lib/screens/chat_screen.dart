@@ -36,15 +36,14 @@ class _ChatScreenState extends State<ChatScreen> {
     socket.emit("signin", widget.selectedUser.id);
   }
 
-  void setMessage({required String type, required String message}) {
+  void setMessage({String? type, String? message}) {
     Message newMessage = Message(message: message, type: type, userID: "test");
     setState(() {
       messages.add(newMessage);
     });
   }
 
-  void sendMessage(
-      {required String message, required int sourceId, required int targetId}) {
+  void sendMessage({String? message, String? targetId}) {
     if (messageTextEditingController.text.length != 0) {
       setMessage(type: "source", message: message);
       socket.emit("message", {
@@ -75,10 +74,11 @@ class _ChatScreenState extends State<ChatScreen> {
                   itemBuilder: (context, index) {
                     var message = messages[index];
                     if (message.type == "source")
-                      return MyMessage(message: message.message, time: "time");
+                      return MyMessage(
+                          message: message.message ?? "", time: "time");
                     else
                       return ReplyMessage(
-                        message: message.message,
+                        message: message.message ?? "",
                         time: 'time',
                       );
                   })),
@@ -120,8 +120,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   onPressed: () {
                     sendMessage(
                         message: messageTextEditingController.text,
-                        sourceId: widget.selectedUser.id,
-                        targetId: 10);
+                        targetId: widget.selectedUser.id);
                   },
                 ),
               ),

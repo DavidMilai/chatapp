@@ -25,9 +25,9 @@ class AuthData {
   factory AuthData.fromMap(Map<String, dynamic> json) => AuthData(
         message: json["message"],
         token: json["token"],
-        id: json["result"]["_id"],
-        email: json["result"]["email"],
-        clientCode: json["result"]["clientCode"],
+        id: json["id"],
+        email: json["email"],
+        clientCode: json["clientCode"],
       );
 
   Map<String, dynamic> toMap() => {
