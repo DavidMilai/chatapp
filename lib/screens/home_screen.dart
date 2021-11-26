@@ -18,28 +18,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late ChatModel selectedChat;
 
-  // List<ChatModel> users = [
-
-  //   ChatModel(
-  //       id: 2,
-  //       currentMessage: "nothing",
-  //       name: "David",
-  //       profilePhoto: "no photo",
-  //       time: DateTime.now()),
-  //   ChatModel(
-  //       id: 3,
-  //       currentMessage: "hello",
-  //       name: "Melvin",
-  //       profilePhoto: "no photo",
-  //       time: DateTime.now()),
-  //   ChatModel(
-  //       id: 4,
-  //       currentMessage: "yow",
-  //       name: "DMM",
-  //       profilePhoto: "no photo",
-  //       time: DateTime.now()),
-  // ];
-
   getChatUsers() {
     usersService.getUsers();
   }
@@ -71,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: ListView.builder(
                               itemCount: users.length,
                               itemBuilder: (context, index) {
-                                var user = users[index];
+                                var user = users.toList()[index];
                                 return GestureDetector(
                                   onTap: () {
                                     selectedChat = ChatModel(

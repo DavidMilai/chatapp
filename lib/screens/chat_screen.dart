@@ -20,20 +20,23 @@ class _ChatScreenState extends State<ChatScreen> {
   late IO.Socket socket;
   late List<Message> messages = [];
   TextEditingController messageTextEditingController = TextEditingController();
+  ScrollController chatController = ScrollController();
 
-  Future<void> connect() async {
-    //socket = IO.io(Config.baseUrl, <String, dynamic>{
-    socket = IO.io("http://192.168.100.30:5000", <String, dynamic>{
+  connect() {
+    // socket = IO.io(Config.baseUrl, <String, dynamic>{
+    socket = IO.io("http://192.168.100.7:5000", <String, dynamic>{
       "transports": ["websocket"],
       "autoConnect": false
     });
     socket.connect();
+
     socket.onConnect((data) {
       socket.on("message", (msg) {
+        print("####received$msg");
         setMessage(type: "destination", message: msg["message"]);
       });
     });
-    socket.emit("signin", widget.selectedUser.id);
+    socket.emit("signin", authService.authData?.id);
   }
 
   void setMessage({String? type, String? message}) {
@@ -41,6 +44,8 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {
       messages.add(newMessage);
     });
+    chatController.animateTo(chatController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 350), curve: Curves.easeOut);
   }
 
   void sendMessage({String? message, String? targetId}) {
@@ -48,7 +53,7 @@ class _ChatScreenState extends State<ChatScreen> {
       setMessage(type: "source", message: message);
       socket.emit("message", {
         "message": message,
-        "sourceId": authService.authData!.id,
+        "sourceId": authService.authData?.id,
         "targetId": targetId,
       });
     }
@@ -70,6 +75,7 @@ class _ChatScreenState extends State<ChatScreen> {
         children: [
           Expanded(
               child: ListView.builder(
+                  controller: chatController,
                   itemCount: messages.length,
                   itemBuilder: (context, index) {
                     var message = messages[index];

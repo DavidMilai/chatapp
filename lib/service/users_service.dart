@@ -29,6 +29,7 @@ class UsersService extends ChangeNotifier {
 
   _saveUsers(data) async {
     await db.users.clear();
+    print(data);
     List<User> users =
         data.map<User>((element) => User.fromMap(element)).toList();
     db.users.addAll(users);
