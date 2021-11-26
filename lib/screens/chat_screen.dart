@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
+import '../config.dart';
+
 class ChatScreen extends StatefulWidget {
   const ChatScreen({required this.selectedUser});
 
@@ -23,8 +25,8 @@ class _ChatScreenState extends State<ChatScreen> {
   ScrollController chatController = ScrollController();
 
   connect() {
-    // socket = IO.io(Config.baseUrl, <String, dynamic>{
-    socket = IO.io("http://192.168.100.7:5000", <String, dynamic>{
+    socket = IO.io(Config.baseUrl, <String, dynamic>{
+      // socket = IO.io("http://192.168.100.7:5000", <String, dynamic>{
       "transports": ["websocket"],
       "autoConnect": false
     });
@@ -56,6 +58,7 @@ class _ChatScreenState extends State<ChatScreen> {
         "sourceId": authService.authData?.id,
         "targetId": targetId,
       });
+      messageTextEditingController.clear();
     }
   }
 

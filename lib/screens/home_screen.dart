@@ -1,5 +1,6 @@
 import 'package:chat_app/data/models/chat_model.dart';
 import 'package:chat_app/data/models/user.dart';
+import 'package:chat_app/service/auth_service.dart';
 import 'package:chat_app/service/users_service.dart';
 import 'package:chat_app/widgets/circular_material_spinner.dart';
 import 'package:flutter/cupertino.dart';
@@ -47,9 +48,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         return CircularMaterialSpinner(
                           loading: loading,
                           child: ListView.builder(
-                              itemCount: users.length,
+                              itemCount: users
+                                  .where((element) =>
+                                      element.id != authService.authData?.id)
+                                  .toList()
+                                  .length,
                               itemBuilder: (context, index) {
-                                var user = users.toList()[index];
+                                var user = users
+                                    .where((element) =>
+                                        element.id != authService.authData?.id)
+                                    .toList()[index];
                                 return GestureDetector(
                                   onTap: () {
                                     selectedChat = ChatModel(
